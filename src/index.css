@@ -1,0 +1,21 @@
+
+@import url("https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@100;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&display=swap");
+
+@import url("https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@100;700&display=swap");
+
+@import "tailwindcss";
+
+
+body{
+    background-color: #F7F3F1;
+    font-family: "poppins", sans-serif;
+}
+@theme {
+  /* This creates the .font-syncopate utility */
+  --font-syncopate: "Syncopate", sans-serif;
+}
+@theme {
+  /* This creates the .font-bai utility */
+  --font-bai: "Bai Jamjuree", sans-serif;
+}
