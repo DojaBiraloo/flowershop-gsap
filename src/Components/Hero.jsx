@@ -5,27 +5,36 @@ import React, { useRef } from 'react'
 const Hero = () => {
     const artRef = useRef(null)
     const objectsRef = useRef(null)
+    const sideRef = useRef(null)
 
    useGSAP(() => {
     const tl = gsap.timeline()
+
+    tl.from(sideRef.current,{
+    opacity:0,
+    duration:1,
+    ease: "power2.inOut"
+}, )
 
 tl.from(artRef.current, {
   opacity: 0,
   y: 200,
   duration: 1,
-  ease: 'power3.out'
-})
+  ease: 'power2.inOut'
+}, '-=0.2')
 .from(objectsRef.current, {
   opacity: 0,
   y: 200,
   duration: 0.7,
-  ease: 'power3.out'
+  ease: 'power2.inOut'
 }, '-=0.5') // starts halfway through ART animation
+
+
   }, [])
 
   return (
     <div className='relative font-bai  flex flex-col md:flex-row  items-center min-h-screen px-20'>
-        <div className='absolute  md:mb-[40rem]   z-[1] md:ml-[16rem] '>
+        <div ref={sideRef} className='absolute  md:mb-[40rem]   z-[1] md:ml-[16rem] '>
             <ul className='uppercase font-bold space-y-1 text-xl text-black/60 '>
                 <li>intro</li>
                 <li>about</li>

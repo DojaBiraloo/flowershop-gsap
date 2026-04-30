@@ -10,62 +10,63 @@ const Images = () => {
   const image2Ref = useRef(null)
   const text1Ref = useRef(null)
   const text2Ref = useRef(null)
+  const mainRef = useRef(null)
 
-  useGSAP(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: image1Ref.current, // section trigger
-        start: 'top 80%',
-        toggleActions: 'play none none reverse'
-      }
-    })
+ useGSAP(() => {
+  gsap.set([image1Ref.current, image2Ref.current], {
+    clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)',
+    willChange: 'clip-path'
+  })
 
- 
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: mainRef.current,
+      start: 'top 80%',
+      toggleActions: 'play none none reverse',
+      invalidateOnRefresh: true
+    }
+  })
 
-    // First image
-    tl.fromTo(
-      image1Ref.current,
-      {
-        clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)'
-      },
-      {
-        clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
-        duration: 1,
-        ease: 'power3.out'
-      }
-    )
+  tl.to(image1Ref.current, {
+    clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
+    duration: 1,
+    ease: 'power3.out'
+  })
 
-    // Second image (slightly delayed / overlapping)
-    tl.fromTo(
-      image2Ref.current,
-      {
-        clipPath: 'polygon(0 100%, 100% 100%, 100% 100%, 0 100%)'
-      },
-      {
-        clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
-        duration: 1,
-        ease: 'power3.out'
-      },
-      '-=0.6' // overlap → starts before first finishes
-    )
+  tl.to(image2Ref.current, {
+    clipPath: 'polygon(0 0%, 100% 0%, 100% 100%, 0 100%)',
+    duration: 1,
+    ease: 'power3.out'
+  }, '-=0.6')
 
-     .from(text1Ref.current, {
-  opacity: 0,
-  y: 8,
-  duration: 0.1,
-  ease: 'none'
-}, '-=0.9')
-     .from(text2Ref.current, {
-  opacity: 0,
-  y: 8,
-  duration: 0.6,
-  ease: 'none'
-}, )
+  tl.from(text1Ref.current, {
+    opacity: 0,
+    y: 8,
+    duration: 0.1,
+    ease: 'none'
+  }, '-=0.9')
 
-  }, [])
+  tl.from(text2Ref.current, {
+    opacity: 0,
+    y: 8,
+    duration: 0.3,
+    ease: 'power2.out'
+  }, '-=0.5')
+
+  const refresh = () => ScrollTrigger.refresh()
+
+  image1Ref.current.addEventListener('load', refresh)
+  image2Ref.current.addEventListener('load', refresh)
+
+  return () => {
+    image1Ref.current?.removeEventListener('load', refresh)
+    image2Ref.current?.removeEventListener('load', refresh)
+    tl.kill()
+  }
+}, [])
 
   return (
-    <div className='mainDiv flex min-h-screen justify-around p-4'>
+    <div ref={mainRef} className='mainDiv flex min-h-screen justify-around p-4'>
       
       {/* LEFT IMAGE */}
       <div className='w-1/4 h-150 mt-30 gap-4'>
@@ -73,7 +74,7 @@ const Images = () => {
 
         <img
           ref={image1Ref}
-          className='object-cover'
+          className='object-cover w-full h-full'
           src="https://images.unsplash.com/photo-1598838073192-05c942ede858"
           alt=""
         />

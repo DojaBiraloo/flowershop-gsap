@@ -104,4 +104,7 @@ html.has-scroll-dragging {
   --font-bai: "Bai Jamjuree", sans-serif;
 
 }
+.line {
+  overflow: hidden;
+}
 
